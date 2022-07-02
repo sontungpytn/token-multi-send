@@ -1,0 +1,20 @@
+stages:
+  - test
+
+default:
+  image: node:16.14
+  before_script:
+    - npm install
+  tags:
+    - docker
+
+unittest:
+  stage: test
+  script:
+    - echo 'MNEMONIC = "test test test test test test test test test test test test"' > .env
+    - echo 'MNEMONICPRO = "test test test test test test test test test test test test"' >> .env
+    - REPORT_GAS=true npx hardhat test
+    - npx hardhat coverage
+  only:
+    - merge_requests
+    - master
